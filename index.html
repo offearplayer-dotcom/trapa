@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>trapa</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23a855f7'/%3E%3Cstop offset='100%25' stop-color='%2338bdf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='%230a0a0e'/%3E%3Ccircle cx='16' cy='16' r='8' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0e;
+    --bg-soft: #101015;
+    --text: #f3f2f6;
+    --muted: #83828e;
+    --accent-a: #a855f7;
+    --accent-b: #38bdf8;
+    --line: rgba(255,255,255,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  /* subtle noise + vignette */
+  .noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    z-index: 3;
+  }
+
+  .vignette {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, transparent 0%, rgba(0,0,0,0.55) 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* waveform signature behind the name */
+  .waveform {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .waveform span {
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--accent-a), var(--accent-b));
+    animation: pulse 2.4s ease-in-out infinite;
+    opacity: 0.35;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scaleY(0.3); opacity: 0.2; }
+    50% { transform: scaleY(1); opacity: 0.55; }
+  }
+
+  .content {
+    position: relative;
+    z-index: 4;
+    text-align: center;
+    padding: 0 24px;
+    animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(64px, 14vw, 140px);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    background: linear-gradient(100deg, #ffffff 0%, var(--accent-a) 55%, var(--accent-b) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 28px;
+  }
+
+  p.tagline {
+    max-width: 420px;
+    margin: 0 auto 40px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 30px;
+    border-radius: 999px;
+    background: linear-gradient(100deg, var(--accent-a), var(--accent-b));
+    color: #0a0a0e;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    box-shadow: 0 0 0 rgba(168, 85, 247, 0);
+    transition: transform 0.25s ease, box-shadow 0.35s ease;
+  }
+
+  .cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px -8px rgba(168, 85, 247, 0.55);
+  }
+
+  .cta:focus-visible {
+    outline: 2px solid var(--accent-b);
+    outline-offset: 4px;
+  }
+
+  .cta svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .cta-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .cta.secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line);
+    box-shadow: none;
+  }
+
+  .cta.secondary:hover {
+    border-color: rgba(255,255,255,0.25);
+    box-shadow: 0 12px 30px -12px rgba(56, 189, 248, 0.35);
+  }
+
+  .tagline .cursor {
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    background: var(--accent-b);
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  .scroll-hint .bar {
+    width: 1px;
+    height: 26px;
+    background: linear-gradient(180deg, var(--muted), transparent);
+    animation: drop 1.8s ease-in-out infinite;
+  }
+
+  @keyframes drop {
+    0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+    50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+    100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .waveform span, .content, .scroll-hint .bar { animation: none !important; }
+  }
+
+  @media (max-width: 480px) {
+    .waveform { gap: 4px; }
+  }
+
+  /* audio control */
+  .sound-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 6;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: rgba(16,16,21,0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text);
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .sound-btn:active { transform: scale(0.92); }
+  .sound-btn:hover { border-color: rgba(255,255,255,0.25); }
+
+  .sound-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .sound-btn .icon-pause { display: none; }
+  .sound-btn.playing .icon-play { display: none; }
+  .sound-btn.playing .icon-pause { display: block; }
+
+  @media (max-width: 480px) {
+    .sound-btn { bottom: 18px; right: 18px; width: 46px; height: 46px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="vignette"></div>
+  <div class="noise"></div>
+
+  <div class="waveform" id="waveform"></div>
+
+  <main class="content">
+    <div class="eyebrow">на связи</div>
+    <h1>trapa</h1>
+    <p class="tagline"><span id="tagline-text"></span><span class="cursor" aria-hidden="true"></span></p>
+    <div class="cta-row">
+      <a class="cta" href="https://t.me/sex2iq" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21.05 3.79L2.7 11.02c-1.26.5-1.25 1.2-.23 1.51l4.7 1.47 1.82 5.6c.22.6.11.84.75.84.5 0 .72-.23 1-.5l2.4-2.34 4.83 3.58c.9.5 1.53.24 1.76-.83l3.18-15c.33-1.3-.5-1.9-1.36-1.56z" fill="currentColor"/>
+        </svg>
+        telegram
+      </a>
+      <a class="cta secondary" href="https://discord.com/users/forglucky" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.32 5.37a17.9 17.9 0 0 0-4.43-1.37c-.2.36-.4.83-.55 1.2a16.6 16.6 0 0 0-4.93 0c-.15-.37-.36-.84-.56-1.2-1.56.27-3.03.74-4.43 1.37C2.9 9.05 2.2 12.62 2.5 16.14a18 18 0 0 0 5.46 2.76c.44-.6.83-1.24 1.17-1.92-.64-.24-1.25-.54-1.83-.9.15-.11.3-.23.45-.35a12.9 12.9 0 0 0 10.5 0c.15.12.3.24.45.35-.58.36-1.19.66-1.83.9.34.68.73 1.32 1.17 1.92a18 18 0 0 0 5.46-2.76c.36-4.08-.67-7.61-2.68-10.77zM9.68 14c-.8 0-1.45-.75-1.45-1.67 0-.93.63-1.68 1.45-1.68.82 0 1.47.76 1.45 1.68 0 .92-.63 1.67-1.45 1.67zm4.65 0c-.8 0-1.45-.75-1.45-1.67 0-.93.63-1.68 1.45-1.68.82 0 1.47.76 1.45 1.68 0 .92-.63 1.67-1.45 1.67z" fill="currentColor"/>
+        </svg>
+        discord
+      </a>
+    </div>
+  </main>
+
+  <div class="scroll-hint">
+    <span class="bar"></span>
+  </div>
+
+  <!-- замени src на путь к своему mp3, например "song.mp3" рядом с index.html -->
+  <audio id="bg-audio" src="song.mp3" preload="none" loop playsinline></audio>
+
+  <button class="sound-btn" id="sound-btn" aria-label="Включить музыку" aria-pressed="false">
+    <svg class="icon-play" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 5v14l11-7L8 5z" fill="currentColor"/>
+    </svg>
+    <svg class="icon-pause" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 5h4v14H7V5zm6 0h4v14h-4V5z" fill="currentColor"/>
+    </svg>
+  </button>
+
+  <script>
+    const wf = document.getElementById('waveform');
+    const bars = 42;
+    for (let i = 0; i < bars; i++) {
+      const el = document.createElement('span');
+      const h = 20 + Math.random() * 120;
+      el.style.height = h + 'px';
+      el.style.animationDelay = (Math.random() * 2.4).toFixed(2) + 's';
+      el.style.animationDuration = (1.8 + Math.random() * 1.4).toFixed(2) + 's';
+      wf.appendChild(el);
+    }
+
+    // --- audio: mobile-safe first-tap autoplay ---
+    const audio = document.getElementById('bg-audio');
+    const btn = document.getElementById('sound-btn');
+    let started = false;
+
+    function setPlayingUI(isPlaying) {
+      btn.classList.toggle('playing', isPlaying);
+      btn.setAttribute('aria-pressed', String(isPlaying));
+      btn.setAttribute('aria-label', isPlaying ? 'Выключить музыку' : 'Включить музыку');
+    }
+
+    function startOnFirstInteraction() {
+      if (started) return;
+      started = true;
+      const p = audio.play();
+      if (p && p.catch) {
+        p.then(() => setPlayingUI(true)).catch(() => {
+          // автоплей заблокирован — покажем кнопку в состоянии play, юзер нажмёт сам
+          started = false;
+          setPlayingUI(false);
+        });
+      } else {
+        setPlayingUI(true);
+      }
+    }
+
+    // первый тап/клик в любом месте страницы запускает трек один раз
+    ['click', 'touchend'].forEach(evt => {
+      document.addEventListener(evt, startOnFirstInteraction, { once: true, passive: true });
+    });
+
+    // сама кнопка — ручной play/pause, не даёт клику по ней дублировать запуск выше
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (audio.paused) {
+        started = true;
+        audio.play().then(() => setPlayingUI(true)).catch(() => setPlayingUI(false));
+      } else {
+        audio.pause();
+        setPlayingUI(false);
+      }
+    });
+
+    audio.addEventListener('pause', () => setPlayingUI(false));
+    audio.addEventListener('play', () => setPlayingUI(true));
+
+    // --- typewriter tagline ---
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const taglineLines = [
+      'Пишу, если по делу.',
+      'Быстрее всего поймать в телеграме.',
+      'Или залетай в дискорд — жми ниже.'
+    ];
+    const taglineEl = document.getElementById('tagline-text');
+
+    if (reduceMotion) {
+      taglineEl.textContent = taglineLines[0];
+    } else {
+      let lineIndex = 0, charIndex = 0, deleting = false;
+
+      function typeLoop() {
+        const current = taglineLines[lineIndex];
+
+        if (!deleting) {
+          charIndex++;
+          taglineEl.textContent = current.slice(0, charIndex);
+          if (charIndex === current.length) {
+            deleting = true;
+            setTimeout(typeLoop, 1600);
+            return;
+          }
+        } else {
+          charIndex--;
+          taglineEl.textContent = current.slice(0, charIndex);
+          if (charIndex === 0) {
+            deleting = false;
+            lineIndex = (lineIndex + 1) % taglineLines.length;
+          }
+        }
+
+        setTimeout(typeLoop, deleting ? 28 : 45);
+      }
+
+      typeLoop();
+    }
+
+    // --- subtle parallax on waveform (desktop / precise pointer only) ---
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+    if (hasFinePointer && !reduceMotion) {
+      let targetX = 0, targetY = 0, curX = 0, curY = 0;
+
+      window.addEventListener('mousemove', (e) => {
+        const nx = (e.clientX / window.innerWidth) - 0.5;
+        const ny = (e.clientY / window.innerHeight) - 0.5;
+        targetX = nx * 24;
+        targetY = ny * 24;
+      });
+
+      function animateParallax() {
+        curX += (targetX - curX) * 0.06;
+        curY += (targetY - curY) * 0.06;
+        wf.style.transform = `translate(calc(-50% + ${curX}px), calc(-50% + ${curY}px))`;
+        requestAnimationFrame(animateParallax);
+      }
+      animateParallax();
+    }
+  </script>
+
+</body>
+</html>
