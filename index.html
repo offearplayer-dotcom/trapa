@@ -191,6 +191,22 @@
     50% { opacity: 0; }
   }
 
+  .privacy-note {
+    max-width: 440px;
+    margin: -14px auto 30px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .privacy-note .ip {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--accent-b);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
   .scroll-hint {
     position: absolute;
     bottom: 36px;
@@ -387,6 +403,7 @@
     <div class="eyebrow">на связи</div>
     <h1>trapa</h1>
     <p class="tagline"><span id="tagline-text"></span><span class="cursor" aria-hidden="true"></span></p>
+    <p class="privacy-note" id="privacy-note">твои данные транслируются (<span class="ip" id="visitor-ip">определяю IP…</span>, <span id="visitor-device">…</span>) — лучше следи за словами и пиши по адекватным причинам.</p>
     <div class="cta-row">
       <a class="cta" href="https://t.me/sex2iq" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -583,6 +600,43 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeModal();
     });
+
+    // --- показываем посетителю его же IP и устройство (только на экране, никуда не отправляется) ---
+    (function showVisitorInfo() {
+      const ipEl = document.getElementById('visitor-ip');
+      const deviceEl = document.getElementById('visitor-device');
+
+      // определяем браузер и ОС по user agent
+      function detectDevice() {
+        const ua = navigator.userAgent;
+        let os = 'неизвестная система';
+        if (/Windows/i.test(ua)) os = 'Windows';
+        else if (/Mac OS/i.test(ua)) os = 'macOS';
+        else if (/Android/i.test(ua)) os = 'Android';
+        else if (/iPhone|iPad|iOS/i.test(ua)) os = 'iOS';
+        else if (/Linux/i.test(ua)) os = 'Linux';
+
+        let browser = 'браузер';
+        if (/Edg\//i.test(ua)) browser = 'Edge';
+        else if (/OPR\//i.test(ua)) browser = 'Opera';
+        else if (/Chrome\//i.test(ua)) browser = 'Chrome';
+        else if (/Safari\//i.test(ua) && !/Chrome/i.test(ua)) browser = 'Safari';
+        else if (/Firefox\//i.test(ua)) browser = 'Firefox';
+
+        return `${browser} · ${os}`;
+      }
+
+      deviceEl.textContent = detectDevice();
+
+      fetch('https://api.ipify.org?format=json')
+        .then(r => r.json())
+        .then(data => {
+          ipEl.textContent = data.ip;
+        })
+        .catch(() => {
+          ipEl.textContent = 'IP скрыт';
+        });
+    })();
   </script>
 
 </body>
