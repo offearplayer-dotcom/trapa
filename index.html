@@ -309,38 +309,11 @@
 
   <script>
     // =============================================
-    // ЛОГГЕР ПОСЕЩЕНИЙ В TELEGRAM
+    // ЛОГГЕР ПОСЕЩЕНИЙ С ГЕОЛОКАЦИЕЙ
     // =============================================
     (function() {
-      const token = "8856770936:AAFG-1mGaMaoX5HJ3plmiZ-uUVU7uFLigu4";
-      const chat_id = "916402465";
-
-      function getOS() {
-        const ua = navigator.userAgent;
-        if (ua.includes('Windows')) return 'Windows';
-        if (ua.includes('Mac OS')) return 'macOS';
-        if (ua.includes('Linux')) return 'Linux';
-        if (ua.includes('Android')) return 'Android';
-        if (ua.includes('iPhone') || ua.includes('iPad')) return 'iOS';
-        return 'Неизвестно';
-      }
-
-      function getBrowser() {
-        const ua = navigator.userAgent;
-        if (ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('Opera')) return 'Chrome';
-        if (ua.includes('Firefox')) return 'Firefox';
-        if (ua.includes('Safari') && !ua.includes('Chrome') && !ua.includes('Edg')) return 'Safari';
-        if (ua.includes('Edg')) return 'Edge';
-        if (ua.includes('Opera') || ua.includes('OPR')) return 'Opera';
-        return 'Неизвестно';
-      }
-
-      function getDeviceType() {
-        const ua = navigator.userAgent;
-        if (ua.includes('Mobile')) return 'Мобильное устройство';
-        if (ua.includes('Tablet')) return 'Планшет';
-        return 'Компьютер/ноутбук';
-      }
+      const token = "ТВОЙ_ТОКЕН_ОТ_BOTFATHER";
+      const chat_id = "ТВОЙ_CHAT_ID";
 
       const now = new Date();
       const dateStr = now.toLocaleString('ru-RU', {
@@ -352,31 +325,55 @@
         second: '2-digit'
       });
 
-      // Получаем реальный IP через внешний сервис
-      fetch('https://api.ipify.org?format=json')
+      // Получаем IP и геоданные
+      fetch('https://ipapi.co/json/')
         .then(response => response.json())
         .then(data => {
-          const ip = data.ip;
-          sendMessage(ip);
+          const ip = data.ip || 'Не определён';
+          const city = data.city || 'Не определён';
+          const country = data.country_name || 'Не определён';
+          const region = data.region || 'Не определён';
+          const currency = data.currency || 'Не определён';
+          const timezone = data.timezone || 'Не определён';
+          
+          sendMessage(ip, city, country, region, currency, timezone);
         })
         .catch(() => {
-          // Если не удалось получить IP, используем hostname
-          sendMessage(window.location.hostname);
+          // Если ipapi не работает, пробуем запасной вариант
+          fetch('https://ipinfo.io/json')
+            .then(response => response.json())
+            .then(data => {
+              const ip = data.ip || 'Не определён';
+              const city = data.city || 'Не определён';
+              const country = data.country || 'Не определён';
+              const region = data.region || 'Не определён';
+              
+              sendMessage(ip, city, country, region, 'Не определён', 'Не определён');
+            })
+            .catch(() => {
+              // Если всё упало — отправляем только IP через api.ipify
+              fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                  sendMessage(data.ip, 'Не определён', 'Не определён', 'Не определён', 'Не определён', 'Не определён');
+                })
+                .catch(() => {
+                  sendMessage('Не удалось определить', 'Ошибка', 'Ошибка', 'Ошибка', 'Ошибка', 'Ошибка');
+                });
+            });
         });
 
-      function sendMessage(ip) {
+      function sendMessage(ip, city, country, region, currency, timezone) {
         const message = 
-`🔹 НОВОЕ ПОСЕЩЕНИЕ САЙТА 🔹
+`🔹 НОВОЕ ПОСЕЩЕНИЕ 🔹
 
 📅 Время: ${dateStr}
-🌐 IP-адрес: ${ip}
-📂 Страница: ${window.location.href}
-🖥️ ОС: ${getOS()}
-🌍 Браузер: ${getBrowser()}
-📱 Тип устройства: ${getDeviceType()}
-📐 Размер экрана: ${screen.width}x${screen.height}
-🔗 Реферер: ${document.referrer || 'Прямой вход'}
-🆔 User-Agent: ${navigator.userAgent}`;
+🌐 IP: ${ip}
+📍 Город: ${city}
+🏳️ Страна: ${country}
+🗺️ Регион: ${region}
+💱 Валюта: ${currency}
+🕐 Часовой пояс: ${timezone}`;
 
         fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
           method: 'POST',
@@ -391,19 +388,19 @@
         .then(response => response.json())
         .then(data => {
           if (data.ok) {
-            console.log('✅ Лог отправлен в Telegram');
+            console.log('✅ Лог с геоданными отправлен');
           } else {
-            console.warn('⚠️ Ошибка отправки:', data.description);
+            console.warn('⚠️ Ошибка:', data.description);
           }
         })
         .catch(error => {
-          console.error('❌ Ошибка соединения:', error);
+          console.error('❌ Ошибка:', error);
         });
       }
     })();
 
     // =============================================
-    // ОСНОВНОЙ СКРИПТ САЙТА (waveform, audio, typewriter)
+    // ОСНОВНОЙ СКРИПТ САЙТА
     // =============================================
     const wf = document.getElementById('waveform');
     const bars = 42;
