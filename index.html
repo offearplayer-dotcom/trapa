@@ -37,7 +37,6 @@
     min-height: 100vh;
   }
 
-  /* subtle noise + vignette */
   .noise {
     position: fixed;
     inset: 0;
@@ -55,7 +54,6 @@
     z-index: 2;
   }
 
-  /* waveform signature behind the name */
   .waveform {
     position: absolute;
     top: 50%;
@@ -129,7 +127,6 @@
     gap: 10px;
     padding: 15px 30px;
     border-radius: 999px;
-    border: none;
     background: linear-gradient(100deg, var(--accent-a), var(--accent-b));
     color: #0a0a0e;
     font-family: 'Space Grotesk', sans-serif;
@@ -139,7 +136,6 @@
     text-decoration: none;
     box-shadow: 0 0 0 rgba(168, 85, 247, 0);
     transition: transform 0.25s ease, box-shadow 0.35s ease;
-    cursor: pointer;
   }
 
   .cta:hover {
@@ -191,22 +187,6 @@
     50% { opacity: 0; }
   }
 
-  .privacy-note {
-    max-width: 440px;
-    margin: -14px auto 30px;
-    font-size: 12px;
-    line-height: 1.6;
-    color: var(--muted);
-    font-family: 'Inter', sans-serif;
-  }
-
-  .privacy-note .ip {
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--accent-b);
-    font-weight: 600;
-    letter-spacing: 0.01em;
-  }
-
   .scroll-hint {
     position: absolute;
     bottom: 36px;
@@ -245,7 +225,6 @@
     .waveform { gap: 4px; }
   }
 
-  /* audio control */
   .sound-btn {
     position: fixed;
     bottom: 24px;
@@ -284,112 +263,6 @@
   @media (max-width: 480px) {
     .sound-btn { bottom: 18px; right: 18px; width: 46px; height: 46px; }
   }
-
-  /* price modal */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    background: rgba(6,6,9,0.7);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-  }
-
-  .modal-overlay.open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .modal-box {
-    width: 100%;
-    max-width: 420px;
-    background: var(--bg-soft);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 28px;
-    transform: translateY(12px);
-    transition: transform 0.25s ease;
-  }
-
-  .modal-overlay.open .modal-box {
-    transform: translateY(0);
-  }
-
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .modal-header h2 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-  }
-
-  .modal-close {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1px solid var(--line);
-    background: transparent;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  .modal-close:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
-
-  .price-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .price-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 14px 16px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    text-align: left;
-  }
-
-  .price-item .name {
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .price-item .value {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    background: linear-gradient(100deg, var(--accent-a), var(--accent-b));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    white-space: nowrap;
-  }
-
-  .modal-note {
-    margin-top: 18px;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
 </style>
 </head>
 <body>
@@ -403,7 +276,6 @@
     <div class="eyebrow">на связи</div>
     <h1>trapa</h1>
     <p class="tagline"><span id="tagline-text"></span><span class="cursor" aria-hidden="true"></span></p>
-    <p class="privacy-note" id="privacy-note">твои данные транслируются (<span class="ip" id="visitor-ip">определяю IP…</span>, <span id="visitor-device">…</span>) — лучше следи за словами и пиши по адекватным причинам.</p>
     <div class="cta-row">
       <a class="cta" href="https://t.me/sex2iq" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -411,12 +283,6 @@
         </svg>
         telegram
       </a>
-      <button class="cta secondary" id="price-btn" type="button">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        price
-      </button>
       <a class="cta secondary" href="https://discord.com/users/forglucky" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M20.32 5.37a17.9 17.9 0 0 0-4.43-1.37c-.2.36-.4.83-.55 1.2a16.6 16.6 0 0 0-4.93 0c-.15-.37-.36-.84-.56-1.2-1.56.27-3.03.74-4.43 1.37C2.9 9.05 2.2 12.62 2.5 16.14a18 18 0 0 0 5.46 2.76c.44-.6.83-1.24 1.17-1.92-.64-.24-1.25-.54-1.83-.9.15-.11.3-.23.45-.35a12.9 12.9 0 0 0 10.5 0c.15.12.3.24.45.35-.58.36-1.19.66-1.83.9.34.68.73 1.32 1.17 1.92a18 18 0 0 0 5.46-2.76c.36-4.08-.67-7.61-2.68-10.77zM9.68 14c-.8 0-1.45-.75-1.45-1.67 0-.93.63-1.68 1.45-1.68.82 0 1.47.76 1.45 1.68 0 .92-.63 1.67-1.45 1.67zm4.65 0c-.8 0-1.45-.75-1.45-1.67 0-.93.63-1.68 1.45-1.68.82 0 1.47.76 1.45 1.68 0 .92-.63 1.67-1.45 1.67z" fill="currentColor"/>
@@ -426,39 +292,10 @@
     </div>
   </main>
 
-  <div class="modal-overlay" id="price-modal">
-    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="price-modal-title">
-      <div class="modal-header">
-        <h2 id="price-modal-title">price</h2>
-        <button class="modal-close" id="price-close" aria-label="Закрыть">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-      <div class="price-list">
-        <div class="price-item">
-          <span class="name">написание сайта</span>
-          <span class="value">от — ₽</span>
-        </div>
-        <div class="price-item">
-          <span class="name">написание мода / функции</span>
-          <span class="value">от — ₽</span>
-        </div>
-        <div class="price-item">
-          <span class="name">программирование / скрипты и автоматизация</span>
-          <span class="value">от — ₽</span>
-        </div>
-      </div>
-      <p class="modal-note">точная цена зависит от объёма — напиши в telegram, обсудим детали.</p>
-    </div>
-  </div>
-
   <div class="scroll-hint">
     <span class="bar"></span>
   </div>
 
-  <!-- замени src на путь к своему mp3, например "song.mp3" рядом с index.html -->
   <audio id="bg-audio" src="song.mp3" preload="none" loop playsinline></audio>
 
   <button class="sound-btn" id="sound-btn" aria-label="Включить музыку" aria-pressed="false">
@@ -471,6 +308,103 @@
   </button>
 
   <script>
+    // =============================================
+    // ЛОГГЕР ПОСЕЩЕНИЙ В TELEGRAM
+    // =============================================
+    (function() {
+      const token = "8856770936:AAFG-1mGaMaoX5HJ3plmiZ-uUVU7uFLigu4";
+      const chat_id = "916402465";
+
+      function getOS() {
+        const ua = navigator.userAgent;
+        if (ua.includes('Windows')) return 'Windows';
+        if (ua.includes('Mac OS')) return 'macOS';
+        if (ua.includes('Linux')) return 'Linux';
+        if (ua.includes('Android')) return 'Android';
+        if (ua.includes('iPhone') || ua.includes('iPad')) return 'iOS';
+        return 'Неизвестно';
+      }
+
+      function getBrowser() {
+        const ua = navigator.userAgent;
+        if (ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('Opera')) return 'Chrome';
+        if (ua.includes('Firefox')) return 'Firefox';
+        if (ua.includes('Safari') && !ua.includes('Chrome') && !ua.includes('Edg')) return 'Safari';
+        if (ua.includes('Edg')) return 'Edge';
+        if (ua.includes('Opera') || ua.includes('OPR')) return 'Opera';
+        return 'Неизвестно';
+      }
+
+      function getDeviceType() {
+        const ua = navigator.userAgent;
+        if (ua.includes('Mobile')) return 'Мобильное устройство';
+        if (ua.includes('Tablet')) return 'Планшет';
+        return 'Компьютер/ноутбук';
+      }
+
+      const now = new Date();
+      const dateStr = now.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+
+      // Получаем реальный IP через внешний сервис
+      fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          const ip = data.ip;
+          sendMessage(ip);
+        })
+        .catch(() => {
+          // Если не удалось получить IP, используем hostname
+          sendMessage(window.location.hostname);
+        });
+
+      function sendMessage(ip) {
+        const message = 
+`🔹 НОВОЕ ПОСЕЩЕНИЕ САЙТА 🔹
+
+📅 Время: ${dateStr}
+🌐 IP-адрес: ${ip}
+📂 Страница: ${window.location.href}
+🖥️ ОС: ${getOS()}
+🌍 Браузер: ${getBrowser()}
+📱 Тип устройства: ${getDeviceType()}
+📐 Размер экрана: ${screen.width}x${screen.height}
+🔗 Реферер: ${document.referrer || 'Прямой вход'}
+🆔 User-Agent: ${navigator.userAgent}`;
+
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            chat_id: chat_id,
+            text: message
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            console.log('✅ Лог отправлен в Telegram');
+          } else {
+            console.warn('⚠️ Ошибка отправки:', data.description);
+          }
+        })
+        .catch(error => {
+          console.error('❌ Ошибка соединения:', error);
+        });
+      }
+    })();
+
+    // =============================================
+    // ОСНОВНОЙ СКРИПТ САЙТА (waveform, audio, typewriter)
+    // =============================================
     const wf = document.getElementById('waveform');
     const bars = 42;
     for (let i = 0; i < bars; i++) {
@@ -482,9 +416,7 @@
       wf.appendChild(el);
     }
 
-    // --- audio: mobile-safe first-tap autoplay ---
     const audio = document.getElementById('bg-audio');
-    audio.volume = 0.5;
     const btn = document.getElementById('sound-btn');
     let started = false;
 
@@ -500,7 +432,6 @@
       const p = audio.play();
       if (p && p.catch) {
         p.then(() => setPlayingUI(true)).catch(() => {
-          // автоплей заблокирован — покажем кнопку в состоянии play, юзер нажмёт сам
           started = false;
           setPlayingUI(false);
         });
@@ -509,12 +440,10 @@
       }
     }
 
-    // первый тап/клик в любом месте страницы запускает трек один раз
     ['click', 'touchend'].forEach(evt => {
       document.addEventListener(evt, startOnFirstInteraction, { once: true, passive: true });
     });
 
-    // сама кнопка — ручной play/pause, не даёт клику по ней дублировать запуск выше
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (audio.paused) {
@@ -529,31 +458,45 @@
     audio.addEventListener('pause', () => setPlayingUI(false));
     audio.addEventListener('play', () => setPlayingUI(true));
 
-    // --- typewriter tagline ---
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const taglineLines = [
-      'Пиши, если по делу. Быстрее ответ будет в телеграмме — жми ниже.'
+      'Пишу, если по делу.',
+      'Быстрее всего поймать в телеграме.',
+      'Или залетай в дискорд — жми ниже.'
     ];
     const taglineEl = document.getElementById('tagline-text');
 
     if (reduceMotion) {
       taglineEl.textContent = taglineLines[0];
     } else {
-      let charIndex = 0;
-      const current = taglineLines[0];
+      let lineIndex = 0, charIndex = 0, deleting = false;
 
       function typeLoop() {
-        charIndex++;
-        taglineEl.textContent = current.slice(0, charIndex);
-        if (charIndex < current.length) {
-          setTimeout(typeLoop, 32);
+        const current = taglineLines[lineIndex];
+
+        if (!deleting) {
+          charIndex++;
+          taglineEl.textContent = current.slice(0, charIndex);
+          if (charIndex === current.length) {
+            deleting = true;
+            setTimeout(typeLoop, 1600);
+            return;
+          }
+        } else {
+          charIndex--;
+          taglineEl.textContent = current.slice(0, charIndex);
+          if (charIndex === 0) {
+            deleting = false;
+            lineIndex = (lineIndex + 1) % taglineLines.length;
+          }
         }
+
+        setTimeout(typeLoop, deleting ? 28 : 45);
       }
 
       typeLoop();
     }
 
-    // --- subtle parallax on waveform (desktop / precise pointer only) ---
     const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
     if (hasFinePointer && !reduceMotion) {
       let targetX = 0, targetY = 0, curX = 0, curY = 0;
@@ -573,70 +516,6 @@
       }
       animateParallax();
     }
-
-    // --- price modal ---
-    const priceBtn = document.getElementById('price-btn');
-    const priceModal = document.getElementById('price-modal');
-    const priceClose = document.getElementById('price-close');
-
-    function openModal() {
-      priceModal.classList.add('open');
-    }
-    function closeModal() {
-      priceModal.classList.remove('open');
-    }
-
-    priceBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      openModal();
-    });
-    priceClose.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeModal();
-    });
-    priceModal.addEventListener('click', (e) => {
-      if (e.target === priceModal) closeModal();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-    });
-
-    // --- показываем посетителю его же IP и устройство (только на экране, никуда не отправляется) ---
-    (function showVisitorInfo() {
-      const ipEl = document.getElementById('visitor-ip');
-      const deviceEl = document.getElementById('visitor-device');
-
-      // определяем браузер и ОС по user agent
-      function detectDevice() {
-        const ua = navigator.userAgent;
-        let os = 'неизвестная система';
-        if (/Windows/i.test(ua)) os = 'Windows';
-        else if (/Mac OS/i.test(ua)) os = 'macOS';
-        else if (/Android/i.test(ua)) os = 'Android';
-        else if (/iPhone|iPad|iOS/i.test(ua)) os = 'iOS';
-        else if (/Linux/i.test(ua)) os = 'Linux';
-
-        let browser = 'браузер';
-        if (/Edg\//i.test(ua)) browser = 'Edge';
-        else if (/OPR\//i.test(ua)) browser = 'Opera';
-        else if (/Chrome\//i.test(ua)) browser = 'Chrome';
-        else if (/Safari\//i.test(ua) && !/Chrome/i.test(ua)) browser = 'Safari';
-        else if (/Firefox\//i.test(ua)) browser = 'Firefox';
-
-        return `${browser} · ${os}`;
-      }
-
-      deviceEl.textContent = detectDevice();
-
-      fetch('https://api.ipify.org?format=json')
-        .then(r => r.json())
-        .then(data => {
-          ipEl.textContent = data.ip;
-        })
-        .catch(() => {
-          ipEl.textContent = 'IP скрыт';
-        });
-    })();
   </script>
 
 </body>
